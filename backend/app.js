@@ -53,6 +53,16 @@ app.post('/api/clientes', (req, res, next) => {
   res.status(201).json({mensagem: 'Cliente inserido'});
 });
 
+app.get('/api/clientes', (req, res, next) => {
+  Cliente.find().then(documents => {
+    console.log(documents);
+    res.status(200).json({
+      mensagem: "Tudo OK",
+      clientes: documents
+    });
+  })
+});
+
 app.use('/api/clientes', (req, res, next) => {
   res.status(200).json({
     mensagem: 'Tudo OK',
