@@ -63,6 +63,14 @@ app.get('/api/clientes', (req, res, next) => {
   })
 });
 
+app.delete('/api/clientes/:id', (req, res, next) => {
+  Cliente.deleteOne({_id: req.params.id}).then((resultado) => {
+    console.log(resultado);
+    res.status(200).json({mensagem: "Cliente removido"});
+  });
+});
+
+
 app.use('/api/clientes', (req, res, next) => {
   res.status(200).json({
     mensagem: 'Tudo OK',

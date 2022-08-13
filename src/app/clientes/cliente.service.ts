@@ -3,6 +3,7 @@ import { Cliente } from "./cliente.model";
 import { Subject } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { map } from 'rxjs/operators'
+import { identifierName } from "@angular/compiler";
 
 @Injectable({ providedIn: 'root' })
 export class ClienteService {
@@ -34,6 +35,7 @@ export class ClienteService {
 
   adicionarCliente(nome: string, fone: string, email:string){
     const cliente: Cliente = {
+      id: "",
       nome: nome,
       fone: fone,
       email: email,
@@ -50,5 +52,16 @@ export class ClienteService {
 
   getListaDeClientesAtualizadaObservable(){
     return this.listaClientesAtualizada.asObservable();
+  }
+
+  removerCliente(id:string){
+    this.httpClient.delete(`http://localhost:3000/api/clientes/${id}`)
+    .subscribe(() => {
+      this.clientes = this.clientes.filter((cli) => {
+        return cli.id !== id
+      });
+      this.listaClientesAtualizada.next([...this.clientes]);
+      //console.log(`Cliente de id:${id} removido`)
+    })
   }
 }
